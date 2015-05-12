@@ -214,11 +214,12 @@ public class PanoController {
 	 * 
 	 * @throws IOException
 	 * @throws InterruptedException
+	 * @throws DocumentException 
 	 */
 	@RequestMapping(value = "/generateVtour", method = RequestMethod.POST)
 	@ResponseBody
 	public void generateVtour(String vtourUUID, String isMac,
-			HttpServletRequest req) throws IOException, InterruptedException {
+			HttpServletRequest req) throws IOException, InterruptedException, DocumentException {
 		// 调用java2sh
 		// *****
 
@@ -278,6 +279,23 @@ public class PanoController {
 		String storageName = "qr" + fileSuffix;// 存储名字
 		String content = req.getSession().getServletContext().getContextPath()+"/uploads/"+vtourUUID+"/vtour/tour.html";
 		ImageUtil.writeImage(targetPath, storageName, content);
+		
+		/*
+		 * 由于krpano原生不支持生出多个xmlpath，所以只能自己copy tour.xml成tour_editor.xml，
+		 * 供tour_editor.html读取，已满足查看和编辑单独开来
+		 */
+		File xmlFile = new File(vtourPath + "/vtour/tour.xml");
+		File editorXml = new File(vtourPath + "/vtour/tour_editor.xml");
+		FileUtils.copyFile(xmlFile, editorXml);
+		//程序更新tour_editor.xml配置文件
+		SAXReader reader = new SAXReader();
+		Document doc;
+		doc = reader.read(editorXml);
+		PanoUtil.addReelProperties(doc);
+		
+		XMLWriter outputWriter = new XMLWriter(new FileWriter(editorXml));
+		outputWriter.write(doc);
+		outputWriter.close();
 	}
 
 }

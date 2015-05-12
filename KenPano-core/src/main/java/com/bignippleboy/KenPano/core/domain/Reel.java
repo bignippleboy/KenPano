@@ -1,7 +1,12 @@
 package com.bignippleboy.KenPano.core.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import org.openkoala.koala.commons.domain.KoalaAbstractEntity;
 
+@Entity
+@Table(name="REEL")
 public class Reel extends KoalaAbstractEntity {
 
 	/**
@@ -9,46 +14,43 @@ public class Reel extends KoalaAbstractEntity {
 	 */
 	private static final long serialVersionUID = -2323685908902274513L;
 	
-	private String image;
+	/*
+	 * 使用的图片集的正则表达式，如：
+	 * images: 'img/360/360rotation_#####.png'
+	 */
+	private String images;
 	
-	private String[] frames;
+	private String uuid;
 	
-	private String initFrame;
+	/*
+	 * 图片帧数
+	 */
+	private String frames;
 	
-	private String footage;
-	
-	private String speed;
+	private String speed = "0.4";
 
-	public String getImage() {
-		return image;
+	public String getImages() {
+		return images;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setImages(String images) {
+		this.images = images;
 	}
 
-	public String[] getFrames() {
+	public String getFrames() {
 		return frames;
 	}
 
-	public void setFrames(String[] frames) {
+	public void setFrames(String frames) {
 		this.frames = frames;
 	}
 
-	public String getInitFrame() {
-		return initFrame;
+	public String getUuid() {
+		return uuid;
 	}
 
-	public void setInitFrame(String initFrame) {
-		this.initFrame = initFrame;
-	}
-
-	public String getFootage() {
-		return footage;
-	}
-
-	public void setFootage(String footage) {
-		this.footage = footage;
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public String getSpeed() {
@@ -57,10 +59,6 @@ public class Reel extends KoalaAbstractEntity {
 
 	public void setSpeed(String speed) {
 		this.speed = speed;
-	}
-	
-	public void upload() {
-		
 	}
 
 	@Override
